@@ -1,79 +1,113 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import type React from "react"
 import { Upload, Zap, Trophy, Shuffle } from "lucide-react"
 
 export function HowItWorks() {
+  const cardStyle: React.CSSProperties = {
+    borderRadius: "0.5rem",
+    overflow: "hidden",
+    backgroundColor: "white",
+    boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+    padding: "1.5rem",
+  }
+
+  const iconContainerStyle: React.CSSProperties = {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "0.5rem",
+    borderRadius: "9999px",
+    backgroundColor: "rgba(124, 58, 237, 0.1)",
+    padding: "0.75rem",
+    width: "fit-content",
+    margin: "0 auto 1rem auto",
+  }
+
+  const iconStyle: React.CSSProperties = {
+    width: "1.5rem",
+    height: "1.5rem",
+    color: "#7c3aed",
+  }
+
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-      <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">How MemeFlow Works</h2>
-            <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+    <section style={{ width: "100%", padding: "3rem 0", backgroundColor: "#f9fafb" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            gap: "1rem",
+          }}
+        >
+          <div style={{ marginBottom: "2rem" }}>
+            <h2 style={{ fontSize: "2.5rem", fontWeight: "bold", lineHeight: "1.2", marginBottom: "1rem" }}>
+              How MemeFlow Works
+            </h2>
+            <p style={{ maxWidth: "700px", margin: "0 auto", color: "#666", fontSize: "1.1rem" }}>
               From upload to legendary status, here's how your memes flow through the platform.
             </p>
           </div>
-          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <div className="flex justify-center mb-2">
-                  <div className="rounded-full bg-primary/10 p-3">
-                    <Upload className="h-6 w-6 text-primary" />
-                  </div>
-                </div>
-                <CardTitle className="text-xl">Upload & Mint</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  Upload your meme image or create one with AI assistance. Instantly mint it as an NFT on Solana.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <div className="flex justify-center mb-2">
-                  <div className="rounded-full bg-primary/10 p-3">
-                    <Zap className="h-6 w-6 text-primary" />
-                  </div>
-                </div>
-                <CardTitle className="text-xl">Enter the Flow</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  Your meme joins the Flow where the community votes to determine its rank and popularity.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <div className="flex justify-center mb-2">
-                  <div className="rounded-full bg-primary/10 p-3">
-                    <Trophy className="h-6 w-6 text-primary" />
-                  </div>
-                </div>
-                <CardTitle className="text-xl">Climb the Ranks</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  As your meme gains votes, it climbs from Common to Rare, Epic, and Legendary status with special
-                  editions.
-                </CardDescription>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <div className="flex justify-center mb-2">
-                  <div className="rounded-full bg-primary/10 p-3">
-                    <Shuffle className="h-6 w-6 text-primary" />
-                  </div>
-                </div>
-                <CardTitle className="text-xl">Remix & Evolve</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  Remix popular memes to create new NFTs while automatically crediting the original creators.
-                </CardDescription>
-              </CardContent>
-            </Card>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr",
+              gap: "1.5rem",
+              maxWidth: "1200px",
+              margin: "0 auto",
+              "@media (min-width: 768px)": {
+                gridTemplateColumns: "repeat(2, 1fr)",
+              },
+              "@media (min-width: 1024px)": {
+                gridTemplateColumns: "repeat(4, 1fr)",
+              },
+            }}
+          >
+            <div style={cardStyle}>
+              <div style={iconContainerStyle}>
+                <Upload style={iconStyle} />
+              </div>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "0.5rem", textAlign: "center" }}>
+                Upload & Mint
+              </h3>
+              <p style={{ color: "#6b7280", fontSize: "0.875rem", textAlign: "center" }}>
+                Upload your meme image or create one with AI assistance. Instantly mint it as an NFT on Solana.
+              </p>
+            </div>
+            <div style={cardStyle}>
+              <div style={iconContainerStyle}>
+                <Zap style={iconStyle} />
+              </div>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "0.5rem", textAlign: "center" }}>
+                Enter the Flow
+              </h3>
+              <p style={{ color: "#6b7280", fontSize: "0.875rem", textAlign: "center" }}>
+                Your meme joins the Flow where the community votes to determine its rank and popularity.
+              </p>
+            </div>
+            <div style={cardStyle}>
+              <div style={iconContainerStyle}>
+                <Trophy style={iconStyle} />
+              </div>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "0.5rem", textAlign: "center" }}>
+                Climb the Ranks
+              </h3>
+              <p style={{ color: "#6b7280", fontSize: "0.875rem", textAlign: "center" }}>
+                As your meme gains votes, it climbs from Common to Rare, Epic, and Legendary status with special
+                editions.
+              </p>
+            </div>
+            <div style={cardStyle}>
+              <div style={iconContainerStyle}>
+                <Shuffle style={iconStyle} />
+              </div>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "0.5rem", textAlign: "center" }}>
+                Remix & Evolve
+              </h3>
+              <p style={{ color: "#6b7280", fontSize: "0.875rem", textAlign: "center" }}>
+                Remix popular memes to create new NFTs while automatically crediting the original creators.
+              </p>
+            </div>
           </div>
         </div>
       </div>

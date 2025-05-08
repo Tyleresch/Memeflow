@@ -4,26 +4,113 @@ import { Twitter, Github, DiscIcon as Discord } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="w-full border-t bg-background">
-      <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
-        <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
-          <Image src="/memeflow.png" alt="MemeFlow Logo" width={32} height={32} className="rounded-md" />
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+    <footer
+      style={{
+        width: "100%",
+        borderTop: "1px solid #e5e7eb",
+        backgroundColor: "#fff",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "1rem",
+          padding: "2.5rem 1rem",
+          "@media (min-width: 768px)": {
+            flexDirection: "row",
+            height: "6rem",
+            padding: 0,
+          },
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "1rem",
+            padding: "0 2rem",
+            "@media (min-width: 768px)": {
+              flexDirection: "row",
+              gap: "0.5rem",
+              padding: 0,
+            },
+          }}
+        >
+          <Image src="/memeflow.png" alt="MemeFlow Logo" width={32} height={32} style={{ borderRadius: "0.375rem" }} />
+          <p
+            style={{
+              textAlign: "center",
+              fontSize: "0.875rem",
+              lineHeight: "1.7",
+              color: "#6b7280",
+              "@media (min-width: 768px)": {
+                textAlign: "left",
+              },
+            }}
+          >
             Built with ❤️ on Solana. © 2024 MemeFlow.
           </p>
         </div>
-        <div className="flex gap-4">
+        <div style={{ display: "flex", gap: "1rem" }}>
           <Link href="https://twitter.com" target="_blank" rel="noreferrer">
-            <Twitter className="h-5 w-5 text-muted-foreground hover:text-foreground" />
-            <span className="sr-only">Twitter</span>
+            <Twitter style={{ width: "1.25rem", height: "1.25rem", color: "#6b7280" }} />
+            <span
+              style={{
+                position: "absolute",
+                width: "1px",
+                height: "1px",
+                padding: 0,
+                margin: "-1px",
+                overflow: "hidden",
+                clip: "rect(0, 0, 0, 0)",
+                whiteSpace: "nowrap",
+                borderWidth: 0,
+              }}
+            >
+              Twitter
+            </span>
           </Link>
           <Link href="https://github.com" target="_blank" rel="noreferrer">
-            <Github className="h-5 w-5 text-muted-foreground hover:text-foreground" />
-            <span className="sr-only">GitHub</span>
+            <Github style={{ width: "1.25rem", height: "1.25rem", color: "#6b7280" }} />
+            <span
+              style={{
+                position: "absolute",
+                width: "1px",
+                height: "1px",
+                padding: 0,
+                margin: "-1px",
+                overflow: "hidden",
+                clip: "rect(0, 0, 0, 0)",
+                whiteSpace: "nowrap",
+                borderWidth: 0,
+              }}
+            >
+              GitHub
+            </span>
           </Link>
           <Link href="https://discord.com" target="_blank" rel="noreferrer">
-            <Discord className="h-5 w-5 text-muted-foreground hover:text-foreground" />
-            <span className="sr-only">Discord</span>
+            <Discord style={{ width: "1.25rem", height: "1.25rem", color: "#6b7280" }} />
+            <span
+              style={{
+                position: "absolute",
+                width: "1px",
+                height: "1px",
+                padding: 0,
+                margin: "-1px",
+                overflow: "hidden",
+                clip: "rect(0, 0, 0, 0)",
+                whiteSpace: "nowrap",
+                borderWidth: 0,
+              }}
+            >
+              Discord
+            </span>
           </Link>
         </div>
       </div>

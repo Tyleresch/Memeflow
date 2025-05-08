@@ -1,27 +1,77 @@
 "use client"
+import { useState, useEffect } from "react"
 import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
-
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export function ModeToggle() {
-  const { setTheme } = useTheme()
+  const [theme, setTheme] = useState<"light" | "dark" | "system">("light")
+  const [mounted, setMounted] = useState(false)
+
+  // When mounted on client, now we can show the UI
+  useEffect(() => setMounted(true), [])
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light")
+
+    // Apply theme to document
+    if (theme === "light") {
+      document.documentElement.classList.add("dark")
+    } else {
+      document.documentElement.classList.remove("dark")
+    }
+  }
+
+  if (!mounted) return null
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button
+      variant="outline"
+      onClick={toggleTheme}
+      style={{
+        position: "relative",
+        width: "2.5rem",
+        height: "2.5rem",
+        padding: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Sun
+        style={{
+          width: "1.2rem",
+          height: "1.2rem",
+          transition: "all 0.2s",
+          opacity: theme === "dark" ? 0 : 1,
+          transform: theme === "dark" ? "rotate(-90deg) scale(0)" : "rotate(0) scale(1)",
+          position: theme === "dark" ? "absolute" : "static",
+        }}
+      />
+      <Moon
+        style={{
+          width: "1.2rem",
+          height: "1.2rem",
+          transition: "all 0.2s",
+          opacity: theme === "dark" ? 1 : 0,
+          transform: theme === "dark" ? "rotate(0) scale(1)" : "rotate(90deg) scale(0)",
+          position: theme === "light" ? "absolute" : "static",
+        }}
+      />
+      <span
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0, 0, 0, 0)",
+          whiteSpace: "nowrap",
+          borderWidth: 0,
+        }}
+      >
+        Toggle theme
+      </span>
+    </Button>
   )
 }
