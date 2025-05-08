@@ -8,6 +8,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* Define your CSS variables for light & dark mode */
 :root {
   /* … all the rest of your --card, --border, etc. … */
