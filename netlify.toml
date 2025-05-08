@@ -1,8 +1,11 @@
-# netlify.toml
 [build]
-  command   = "npm run build"
-  publish   = ".next"
-  functions = "netlify/functions"
+  # 👇 NEW – set the folder that contains package.json
+  base       = "web/memeflow_frontend"
+
+  # normal Next build
+  command    = "npm run build"
+  publish    = ".next"
+  functions  = "netlify/functions"
 
 [[plugins]]
-  package = "@netlify/plugin-nextjs"
+  package = "@netlify/plugin-nextjs"   # <- correct plugin name
