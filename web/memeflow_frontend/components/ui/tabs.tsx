@@ -1,25 +1,81 @@
+// components/ui/tabs.tsx
 "use client"
 
 import * as React from "react"
-import * as ProgressPrimitive from "@radix-ui/react-progress"
 
-import { cn } from "@/lib/utils"
+interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
+  defaultValue: string
+  children: React.ReactNode
+}
 
-const Progress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
->(({ className, value, ...props }, ref) => (
-  <ProgressPrimitive.Root
-    ref={ref}
-    className={cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className)}
-    {...props}
-  >
-    <ProgressPrimitive.Indicator
-      className="h-full w-full flex-1 bg-primary transition-all"
-      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-    />
-  </ProgressPrimitive.Root>
-))
-Progress.displayName = ProgressPrimitive.Root.displayName
+interface TabsContextType {
+  value: string
+  setValue: (v: string) => void
+}
 
-export { Progress }
+const TabsContext = React.createContext<TabsContextType>({
+  value: "",
+  setValue: () => {},
+})
+
+export function Tabs({ defaultValue, children, className = "", ...props }: TabsProps) {
+  const [value, setValue] = React.useState(defaultValue)
+  return (
+    <TabsContext.Provider value={{ value, setValue }}>
+      <div className={className} {...props}>
+        {children}
+      </div>
+    </TabsContext.Provider>
+  )
+}
+
+interface TabsListProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode
+}
+
+export function TabsList({ children, className = "", ...props }: TabsListProps) {
+  return (
+    <div className={`flex space-x-2 ${className}`} {...props}>
+      {children}
+    </div>
+  )
+}
+
+interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  value: string
+  children: React.ReactNode
+}
+
+export function TabsTrigger({ value, children, className = "", ...props }: TabsTriggerProps) {
+  const { value: selected, setValue } = React.useContext(TabsContext)
+  const isSelected = selected === value
+
+  return (
+    <button
+      className={`px-3 py-1 rounded-md ${
+        isSelected
+          ? "bg-primary text-primary-foreground"
+          : "bg-transparent text-foreground"
+      } ${className}`}
+      onClick={() => setValue(value)}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+}
+
+interface TabsContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  value: string
+  children: React.ReactNode
+}
+
+export function TabsContent({ value, children, className = "", ...props }: TabsContentProps) {
+  const { value: selected } = React.useContext(TabsContext)
+  if (selected !== value) return null
+  return (
+    <div className={className} {...props}>
+      {children}
+    </div>
+  )
+}
