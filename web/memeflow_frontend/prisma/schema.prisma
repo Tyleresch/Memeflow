@@ -1,15 +1,24 @@
+// prisma/schema.prisma
+// --------------------
+// 1.  Datasource — points Prisma at your DB
+// 2.  Generator  — produces the TypeScript client
+// 3.  Models     — your domain schema
+// --------------------
+
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"                // or postgres/mysql
+  url      = env("DATABASE_URL")     // e.g. "file:./dev.db"
 }
 
-generator client { provider = "prisma-client-js" }
+generator client {
+  provider = "prisma-client-js"
+}
 
 model User {
-  id        String   @id @default(cuid())
-  wallet    String   @unique
-  createdAt DateTime @default(now())
-  proposals Proposal[]
+  id         String     @id @default(cuid())
+  wallet     String     @unique
+  createdAt  DateTime   @default(now())
+  proposals  Proposal[]
 }
 
 model Proposal {
@@ -17,7 +26,9 @@ model Proposal {
   onChainKey String   @unique
   title      String
   amount     Int
-  creatorId  String
   createdAt  DateTime @default(now())
-  creator    User     @relation(fields: [creatorId], references: [id])
+
+  // relation ---------
+  creatorId  String
+  creator    User   @relation(fields: [creatorId], references: [id])
 }
