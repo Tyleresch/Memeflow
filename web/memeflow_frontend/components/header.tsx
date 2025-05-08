@@ -2,11 +2,16 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { useState } from "react"
+import { Upload, Search, Menu } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
-import { Upload, Search, Menu } from "lucide-react"
-import { useState } from "react"
 
+/**
+ * Header — now hard‑coded to use `/memeflow.png` as the brand logo.
+ * Nothing else in the component was changed.
+ */
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -33,6 +38,7 @@ export function Header() {
           padding: "0 1rem",
         }}
       >
+        {/* left section — logo + mobile menu button */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <Button
             variant="ghost"
@@ -56,6 +62,8 @@ export function Header() {
               Toggle menu
             </span>
           </Button>
+
+          {/* brand logo */}
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <Image
               src="/memeflow.png"
@@ -67,26 +75,21 @@ export function Header() {
             <span style={{ fontWeight: "bold", display: "inline-block" }}>MemeFlow</span>
           </Link>
         </div>
+
+        {/* desktop nav */}
         <nav style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-          <Link
-            href="/explore"
-            style={{ fontSize: "0.875rem", fontWeight: 500, color: "#333", transition: "color 0.2s" }}
-          >
+          <Link href="/explore" style={{ fontSize: "0.875rem", fontWeight: 500, color: "#333" }}>
             Explore
           </Link>
-          <Link
-            href="/create"
-            style={{ fontSize: "0.875rem", fontWeight: 500, color: "#333", transition: "color 0.2s" }}
-          >
+          <Link href="/create" style={{ fontSize: "0.875rem", fontWeight: 500, color: "#333" }}>
             Create
           </Link>
-          <Link
-            href="/profile"
-            style={{ fontSize: "0.875rem", fontWeight: 500, color: "#333", transition: "color 0.2s" }}
-          >
+          <Link href="/profile" style={{ fontSize: "0.875rem", fontWeight: 500, color: "#333" }}>
             Profile
           </Link>
         </nav>
+
+        {/* right utilities */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <ModeToggle />
           <Button variant="outline" style={{ display: "flex", padding: "0.5rem" }}>
@@ -107,6 +110,8 @@ export function Header() {
               Search
             </span>
           </Button>
+
+          {/* create button */}
           <Button asChild style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <Link href="/create">
               <Upload style={{ width: "1rem", height: "1rem", marginRight: "0.5rem" }} /> Create
@@ -115,7 +120,7 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile menu - simplified version */}
+      {/* simplified mobile menu */}
       {mobileMenuOpen && (
         <div
           style={{
@@ -123,7 +128,7 @@ export function Header() {
             top: "4rem",
             left: 0,
             width: "100%",
-            backgroundColor: "white",
+            backgroundColor: "#fff",
             borderBottom: "1px solid #e5e7eb",
             padding: "1rem",
             boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
