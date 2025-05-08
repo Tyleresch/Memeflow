@@ -79,12 +79,7 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              variant="ghost"
-              style={{
-                border: "2px solid rgba(255,255,255,0.85)",
-                color: "var(--primary-foreground)",
-                backdropFilter: "blur(4px)",
-              }}
+              style={{ background: "var(--primary-foreground)", color: "var(--primary)", fontWeight: 700 }}
             >
               <Link href="/explore">Explore Memes</Link>
             </Button>
