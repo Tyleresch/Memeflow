@@ -1,20 +1,62 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import Image from "next/image"
-import { useState } from "react"
-import { Upload, Search, Menu } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Menu, Search, Upload } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { ModeToggle } from "@/components/mode-toggle"
+import { ModeToggle } from "@/components/mode-toggle";
+import { Button } from "@/components/ui/button";
 
 /**
- * Header — now hard‑coded to use `/memeflow.png` as the brand logo.
- * Nothing else in the component was changed.
+ * Header with theme‑aware buttons.
+ *  – Search / theme buttons use the secondary palette
+ *  – “Create” button uses the primary palette
+ * Variables come from :root / .dark in globals.css, so the colors
+ * flip automatically when ModeToggle adds or removes the `.dark` class.
  */
 export function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  /* shared styles ------------------------------------------------------- */
+  const outlineBtn: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "2.25rem",
+    height: "2.25rem",
+    border: "1px solid var(--border)",
+    borderRadius: "0.5rem",
+    background: "var(--secondary)",
+    color: "var(--muted-foreground)",
+  };
+
+  const primaryBtn: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "0.5rem",
+    height: "2.25rem",
+    padding: "0 1rem",
+    borderRadius: "0.5rem",
+    background: "var(--primary)",
+    color: "var(--primary-foreground)",
+    fontWeight: 500,
+    border: 0,
+  };
+
+  const srOnly: React.CSSProperties = {
+    position: "absolute",
+    width: 1,
+    height: 1,
+    padding: 0,
+    margin: -1,
+    overflow: "hidden",
+    clipPath: "inset(50%)",
+    border: 0,
+  };
+
+  /* -------------------------------------------------------------------- */
   return (
     <header
       style={{
@@ -22,8 +64,8 @@ export function Header() {
         top: 0,
         zIndex: 50,
         width: "100%",
-        borderBottom: "1px solid #e5e7eb",
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        borderBottom: "1px solid var(--border)",
+        background: "var(--background)",
         backdropFilter: "blur(8px)",
       }}
     >
@@ -38,32 +80,17 @@ export function Header() {
           padding: "0 1rem",
         }}
       >
-        {/* left section — logo + mobile menu button */}
+        {/* logo + mobile toggle */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <Button
             variant="ghost"
-            style={{ display: "flex", padding: "0.5rem", marginRight: "0.5rem", display: "none" }}
+            style={{ display: "none" }} /* show via media query if needed */
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <Menu style={{ width: "1.25rem", height: "1.25rem" }} />
-            <span
-              style={{
-                position: "absolute",
-                width: "1px",
-                height: "1px",
-                padding: 0,
-                margin: "-1px",
-                overflow: "hidden",
-                clip: "rect(0, 0, 0, 0)",
-                whiteSpace: "nowrap",
-                borderWidth: 0,
-              }}
-            >
-              Toggle menu
-            </span>
+            <span style={srOnly}>Toggle menu</span>
           </Button>
 
-          {/* brand logo */}
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <Image
               src="/memeflow.png"
@@ -72,55 +99,45 @@ export function Header() {
               height={40}
               style={{ borderRadius: "0.375rem" }}
             />
-            <span style={{ fontWeight: "bold", display: "inline-block" }}>MemeFlow</span>
+            <span style={{ fontWeight: 700 }}>MemeFlow</span>
           </Link>
         </div>
 
-        {/* desktop nav */}
+        {/* navigation */}
         <nav style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-          <Link href="/explore" style={{ fontSize: "0.875rem", fontWeight: 500, color: "#333" }}>
-            Explore
-          </Link>
-          <Link href="/create" style={{ fontSize: "0.875rem", fontWeight: 500, color: "#333" }}>
-            Create
-          </Link>
-          <Link href="/profile" style={{ fontSize: "0.875rem", fontWeight: 500, color: "#333" }}>
-            Profile
-          </Link>
+          {["Explore", "Create", "Profile"].map((label) => (
+            <Link
+              key={label}
+              href={`/${label.toLowerCase()}`}
+              style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--foreground)" }}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
 
-        {/* right utilities */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <ModeToggle />
-          <Button variant="outline" style={{ display: "flex", padding: "0.5rem" }}>
-            <Search style={{ width: "1rem", height: "1rem" }} />
-            <span
-              style={{
-                position: "absolute",
-                width: "1px",
-                height: "1px",
-                padding: 0,
-                margin: "-1px",
-                overflow: "hidden",
-                clip: "rect(0, 0, 0, 0)",
-                whiteSpace: "nowrap",
-                borderWidth: 0,
-              }}
-            >
-              Search
-            </span>
-          </Button>
+        {/* utilities */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          {/* theme toggle comes from ShadCN / your own component */}
+          <div style={outlineBtn}>
+            <ModeToggle />
+          </div>
 
-          {/* create button */}
-          <Button asChild style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Link href="/create">
-              <Upload style={{ width: "1rem", height: "1rem", marginRight: "0.5rem" }} /> Create
-            </Link>
-          </Button>
+          {/* search icon */}
+          <button type="button" style={outlineBtn}>
+            <Search style={{ width: "1rem", height: "1rem" }} />
+            <span style={srOnly}>Search</span>
+          </button>
+
+          {/* create / upload */}
+          <Link href="/create" style={primaryBtn}>
+            <Upload style={{ width: "1rem", height: "1rem" }} />
+            Create
+          </Link>
         </div>
       </div>
 
-      {/* simplified mobile menu */}
+      {/* simple mobile drawer (unchanged) */}
       {mobileMenuOpen && (
         <div
           style={{
@@ -128,28 +145,25 @@ export function Header() {
             top: "4rem",
             left: 0,
             width: "100%",
-            backgroundColor: "#fff",
-            borderBottom: "1px solid #e5e7eb",
+            background: "var(--background)",
+            borderBottom: "1px solid var(--border)",
             padding: "1rem",
-            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1)",
           }}
         >
           <nav style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <Link href="/" style={{ fontSize: "1rem", fontWeight: 500, color: "#333" }}>
-              Home
-            </Link>
-            <Link href="/explore" style={{ fontSize: "1rem", fontWeight: 500, color: "#333" }}>
-              Explore
-            </Link>
-            <Link href="/create" style={{ fontSize: "1rem", fontWeight: 500, color: "#333" }}>
-              Create
-            </Link>
-            <Link href="/profile" style={{ fontSize: "1rem", fontWeight: 500, color: "#333" }}>
-              Profile
-            </Link>
+            {["Home", "Explore", "Create", "Profile"].map((label) => (
+              <Link
+                key={label}
+                href={label === "Home" ? "/" : `/${label.toLowerCase()}`}
+                style={{ fontSize: "1rem", fontWeight: 500, color: "var(--foreground)" }}
+              >
+                {label}
+              </Link>
+            ))}
           </nav>
         </div>
       )}
     </header>
-  )
+  );
 }
