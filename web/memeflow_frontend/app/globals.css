@@ -1,13 +1,10 @@
+/* ---- add / replace the FIRST lines ---- */
+@import "tailwindcss-animate";   /* ✅ correct import - was tw-animate-css */
 
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
-
-/* app/globals.css */
+/* Tailwind must come after any @import */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 /* Define your CSS variables for light & dark mode */
 :root {
