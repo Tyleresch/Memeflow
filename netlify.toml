@@ -1,8 +1,8 @@
+# netlify.toml
 [build]
-  command   = "npm run build"   # or "yarn build"
-  publish   = ".next"           # where Next places its static assets
+  command   = "npm run build"
+  publish   = ".next"
   functions = "netlify/functions"
 
 [[plugins]]
-    package = "@netlify/nextjs"
-    package = "@netlify/plugin-nextjs"
+  package = "@netlify/plugin-nextjs"
