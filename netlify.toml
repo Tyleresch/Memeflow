@@ -1,0 +1,7 @@
+[build]
+  command   = "npm run build"   # or "yarn build"
+  publish   = ".next"           # where Next places its static assets
+  functions = "netlify/functions"
+
+[[plugins]]
+  package = "@netlify/nextjs"
