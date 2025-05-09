@@ -1,14 +1,27 @@
-"use client";
-
+// app/page.tsx
 import Link from "next/link";
 import { ArrowRight, Star } from "lucide-react";
-
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { FeaturedMeme } from "@/components/featured-meme";
 import { HowItWorks } from "@/components/how-it-works";
 import { TrendingMemes } from "@/components/trending-memes";
+import { prisma } from "@/lib/prisma";
 
-export default function Home() {
+export default async function Home() {
+  // fetch the most recently created meme
+  const featured = await prisma.meme.findFirst({
+    orderBy: { createdAt: "desc" },
+  });
+
+  // if we only have the placeholder token, fall back to real placeholder.svg
+  const rawUrl = featured?.imageUrl;
+  const featuredImage =
+    rawUrl && rawUrl !== "OFF_CHAIN_PLACEHOLDER"
+      ? rawUrl
+      : "/placeholder.svg";
+
+  const featuredTitle = featured?.title || "No memes yet";
+
   /* shared wrapper so every block gets the right background in either theme */
   const section = (bg: string = "var(--background)") =>
     ({
@@ -58,8 +71,16 @@ export default function Home() {
             Rank & Remix NFTs on Solana
           </h1>
 
-          <p style={{ maxWidth: 700, margin: "0 auto 2.5rem", fontSize: "1.25rem", lineHeight: 1.5, opacity: 0.9 }}>
-            Transform the internet&apos;s funniest images into on‑chain collectibles. Mint, rank, and remix memes in the
+          <p
+            style={{
+              maxWidth: 700,
+              margin: "0 auto 2.5rem",
+              fontSize: "1.25rem",
+              lineHeight: 1.5,
+              opacity: 0.9,
+            }}
+          >
+            Transform the internet&apos;s funniest images into on-chain collectibles. Mint, rank, and remix memes in the
             Flow.
           </p>
 
@@ -75,7 +96,6 @@ export default function Home() {
               </Link>
             </Button>
 
-            {/* theme‑aware outline so it never blends in */}
             <Button
               asChild
               size="lg"
@@ -111,7 +131,17 @@ export default function Home() {
 
       {/* FEATURED MEME ===================================================== */}
       <section style={section()}>
-        <FeaturedMeme />
+        <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: "2rem", marginBottom: "1rem" }}>Latest Meme</h2>
+          <Image
+            src={featuredImage}
+            alt={featuredTitle}
+            width={600}
+            height={400}
+            style={{ borderRadius: "1rem", objectFit: "cover", width: "100%", height: "auto" }}
+          />
+          <p style={{ marginTop: "0.5rem", fontWeight: 500 }}>{featuredTitle}</p>
+        </div>
       </section>
 
       {/* HOW IT WORKS ====================================================== */}

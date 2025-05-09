@@ -42,6 +42,17 @@ export default function CreatePage() {
       setSubmitting(true);
       setMessage(null);
 
+      // 1️⃣ turn file into a data-URI
+      const imageData: string = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (typeof reader.result === 'string') resolve(reader.result);
+          else reject(new Error('Failed to read file'));
+        };
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+
       // build JSON payload for /api/proposals
       const walletAddr = (window as any).solana?.publicKey?.toString();
       if (!walletAddr) {
@@ -51,9 +62,11 @@ export default function CreatePage() {
       }
 
       const payload = {
-        title:  nftName || file.name,
-        amount: royalty,
-        wallet: walletAddr,
+        title:     nftName || file.name,
+        amount:    royalty,
+        wallet:    walletAddr,
+        imageData,
+        caption,
       };
 
       const res = await fetch('/api/proposals', {

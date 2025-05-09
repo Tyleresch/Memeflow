@@ -18,20 +18,23 @@ export async function POST(req: NextRequest) {
     return bad('Invalid JSON');
   }
 
-  const { title, amount, wallet } = body as {
+  const { title, amount, wallet, imageData, caption } = body as {
     title?: string;
     amount?: number | string;
     wallet?: string;
+    imageData?: string;
+    caption?: string;
   };
 
   /* validate ---------------------------------------------------------- */
-  if (!title?.trim())          return bad('Missing title');
-  if (amount == null)          return bad('Missing amount');
-  if (!wallet)                 return bad('Missing wallet');
+  if (!title?.trim())       return bad('Missing title');
+  if (amount == null)       return bad('Missing amount');
+  if (!wallet)              return bad('Missing wallet');
+  if (!imageData?.startsWith('data:')) return bad('Missing image');
 
   const lamports = Number(amount);
-  if (Number.isNaN(lamports) || lamports <= 0)
-    return bad('Amount must be a positive number');
+  if (Number.isNaN(lamports) || lamports < 0)
+    return bad('Amount must be a non-negative number');
 
   let walletKey: PublicKey;
   try {
@@ -40,15 +43,14 @@ export async function POST(req: NextRequest) {
     return bad('Invalid wallet address');
   }
 
-  /* write to your Meme table instead of non-existent Proposal --------- */
+  /* create Meme record with embedded data-URI ---------------------------------- */
   try {
     const meme = await prisma.meme.create({
       data: {
         title:       title.trim(),
-        // map amount (e.g. percentage) to basis points:
+        description: caption ?? '',
+        imageUrl:    imageData,
         royaltyBps:  lamports * 100,
-        // placeholder since no image upload here:
-        imageUrl:    'OFF_CHAIN_PLACEHOLDER',
         creator: {
           connectOrCreate: {
             where:  { wallet: walletKey.toBase58() },
