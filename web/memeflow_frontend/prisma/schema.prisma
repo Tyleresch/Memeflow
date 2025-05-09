@@ -1,34 +1,109 @@
 // prisma/schema.prisma
-// --------------------
-// 1.  Datasource — points Prisma at your DB
-// 2.  Generator  — produces the TypeScript client
-// 3.  Models     — your domain schema
-// --------------------
+// ------------------------------------------------------------
+// 1) datasource   – points Prisma at the SQLite file
+// 2) generator    – produces the TypeScript client
+// 3) models       – your domain schema (users, memes, votes…)
+// ------------------------------------------------------------
 
 datasource db {
-  provider = "sqlite"                // or postgres/mysql
-  url      = env("DATABASE_URL")     // e.g. "file:./dev.db"
+  provider = "sqlite"
+  url      = env("DATABASE_URL")   // ex: "file:./data/memeflow.db"
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id         String     @id @default(cuid())
-  wallet     String     @unique
-  createdAt  DateTime   @default(now())
-  proposals  Proposal[]
+/* ENUMS -----------------------------------------------------*/
+enum Rarity {
+  Common
+  Rare
+  Epic
+  Legendary
+  Apex
 }
 
-model Proposal {
+/* MODELS ----------------------------------------------------*/
+model User {
+  id           String      @id @default(cuid())
+  wallet       String      @unique
+  username     String?
+  displayName  String?
+  avatarUrl    String?
+  bio          String?
+  createdAt    DateTime    @default(now())
+
+  memes        Meme[]      @relation("UserMemes")
+  comments     Comment[]
+  votes        Vote[]
+  sales        Sale[]      @relation("BuyerSales")
+}
+
+model Meme {
+  id             String      @id @default(cuid())
+  title          String
+  description    String?
+  imageUrl       String
+  mintAddress    String?     @unique
+  collection     String?
+  rarity         Rarity      @default(Common)
+  rankScore      Int         @default(0)
+  royaltyBps     Int         @default(500)
+  createdAt      DateTime    @default(now())
+
+  /* creator */
+  creatorId      String
+  creator        User        @relation("UserMemes", fields: [creatorId], references: [id])
+
+  /* remix (self‑relation) */
+  parentMemeId   String?
+  parent         Meme?       @relation("Remix", fields: [parentMemeId], references: [id])
+  children       Meme[]      @relation("Remix")
+
+  /* other relations */
+  votes          Vote[]
+  comments       Comment[]
+  sales          Sale[]      @relation("MemeSales")
+}
+
+model Vote {
+  memeId   String
+  userId   String
+  score    Int                // 1 = up‑vote, -1 = down‑vote
+
+  meme     Meme   @relation(fields: [memeId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
+
+  @@id([memeId, userId])      // composite primary key
+}
+
+model Comment {
   id         String   @id @default(cuid())
-  onChainKey String   @unique
-  title      String
-  amount     Int
+  memeId     String
+  userId     String
+  body       String
   createdAt  DateTime @default(now())
 
-  // relation ---------
-  creatorId  String
-  creator    User   @relation(fields: [creatorId], references: [id])
+  meme       Meme     @relation(fields: [memeId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model LoginNonce {
+  id         String   @id @default(cuid())
+  wallet     String
+  nonce      String   @unique
+  used       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model Sale {
+  id             String   @id @default(cuid())
+  memeId         String
+  buyerWallet    String
+  priceLamports  BigInt
+  txSig          String?
+  createdAt      DateTime @default(now())
+
+  meme           Meme     @relation("MemeSales", fields: [memeId], references: [id])
+  buyer          User?    @relation("BuyerSales", fields: [buyerWallet], references: [wallet])
 }
