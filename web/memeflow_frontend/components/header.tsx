@@ -7,12 +7,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, Search, Upload } from 'lucide-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { useRouter } from 'next/navigation';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const router = useRouter();
 
   const outlineBtn: React.CSSProperties = {
     display: 'inline-flex',
@@ -116,7 +118,11 @@ export function Header() {
             <ModeToggle />
           </div>
 
-          <button type="button" style={outlineBtn}>
+          <button
+            type="button"
+            style={outlineBtn}
+            onClick={() => router.push('/explore')}
+          >
             <Search style={{ width: '1rem', height: '1rem' }} />
             <span style={srOnly}>Search</span>
           </button>

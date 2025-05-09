@@ -40,10 +40,7 @@ export async function POST(req: NextRequest) {
     return bad('Invalid wallet address');
   }
 
-  /* anchor stub (commented) ------------------------------------------ */
-  // … (unchanged, still commented) …
-
-  /* off‑chain record -------------------------------------------------- */
+  /* off-chain record -------------------------------------------------- */
   try {
     const proposal = await prisma.proposal.create({
       data: {

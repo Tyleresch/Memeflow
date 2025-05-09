@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Twitter, Github, Disc as Discord } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
 
 export function Footer() {
   return (
@@ -25,21 +25,27 @@ export function Footer() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <Image src="/memeflow.png" alt="" width={32} height={32} style={{ borderRadius: "0.375rem" }} />
+          <Image
+            src="/memeflow.png"
+            alt=""
+            width={32}
+            height={32}
+            style={{ borderRadius: "0.375rem" }}
+          />
           <p style={{ fontSize: "0.875rem", color: "var(--muted-foreground)" }}>
-            Built with ❤️ on Solana. © 2025 MemeFlow.
+            Built with ❤️ on Solana. © 2025 MemeFlow.
           </p>
         </div>
 
         <div style={{ display: "flex", gap: "1rem" }}>
-          <SocialIcon href="https://twitter.com" label="Twitter">
-            <Twitter />
-          </SocialIcon>
           <SocialIcon href="https://github.com/Tyleresch" label="GitHub">
             <Github />
           </SocialIcon>
-          <SocialIcon href="https://discord.com" label="Discord">
-            <Discord />
+          <SocialIcon
+            href="https://www.linkedin.com/in/tyler-esch"
+            label="LinkedIn"
+          >
+            <Linkedin />
           </SocialIcon>
         </div>
       </div>
@@ -47,7 +53,6 @@ export function Footer() {
   );
 }
 
-/* Re‑usable wrapper so all icons inherit the current theme colour */
 function SocialIcon({
   href,
   label,
@@ -60,7 +65,9 @@ function SocialIcon({
   return (
     <Link href={href} target="_blank" rel="noreferrer">
       <span style={srOnly}>{label}</span>
-      <span style={{ color: "var(--muted-foreground)", display: "inline-flex" }}>{children}</span>
+      <span style={{ color: "var(--muted-foreground)", display: "inline-flex" }}>
+        {children}
+      </span>
     </Link>
   );
 }

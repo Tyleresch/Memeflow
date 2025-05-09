@@ -1,3 +1,4 @@
+// app/create/page.tsx
 'use client';
 
 import { useRef, useState, FormEvent } from 'react';
@@ -17,19 +18,19 @@ const inputBox: React.CSSProperties = {
 
 export default function CreatePage() {
   /* ------------------------------------------------------------------ */
-  /* state                                                               */
+  /* state                                                              */
   /* ------------------------------------------------------------------ */
-  const [file, setFile]           = useState<File | null>(null);
-  const [caption, setCaption]     = useState('');
-  const [nftName, setNftName]     = useState('');
-  const [royalty, setRoyalty]     = useState(5);
+  const [file, setFile]             = useState<File | null>(null);
+  const [caption, setCaption]       = useState('');
+  const [nftName, setNftName]       = useState('');
+  const [royalty, setRoyalty]       = useState(5);
   const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage]     = useState<'ok' | string | null>(null);
+  const [message, setMessage]       = useState<'ok' | string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   /* ------------------------------------------------------------------ */
-  /* handlers                                                            */
+  /* handlers                                                           */
   /* ------------------------------------------------------------------ */
   const chooseFile = () => fileInputRef.current?.click();
 
@@ -47,7 +48,8 @@ export default function CreatePage() {
       body.append('caption',  caption);
       body.append('royalty',  royalty.toString());
 
-      const res = await fetch('/api/memes', { method: 'POST', body });
+      // ◀️ changed endpoint here to match your API route
+      const res = await fetch('/api/proposals', { method: 'POST', body });
       if (!res.ok) throw new Error(await res.text());
 
       setMessage('ok');
@@ -65,7 +67,7 @@ export default function CreatePage() {
   }
 
   /* ------------------------------------------------------------------ */
-  /* UI                                                                  */
+  /* UI                                                                 */
   /* ------------------------------------------------------------------ */
   return (
     <main style={{
@@ -83,7 +85,7 @@ export default function CreatePage() {
           {/* header */}
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <h1 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '1rem', color: 'var(--foreground)' }}>
-              Create Your Meme&nbsp;NFT
+              Create Your Meme NFT
             </h1>
             <p style={{
               fontSize: '1.25rem',
@@ -91,13 +93,11 @@ export default function CreatePage() {
               maxWidth: '800px',
               margin: '0 auto',
             }}>
-              Upload an image, add a caption, and mint your meme as an NFT on Solana.
+              Upload an image, add a caption, and mint your meme as an NFT on Solana.
             </p>
           </div>
 
-          {/* ------------------------------------------------------------------ */}
-          {/* 1 ·  UPLOAD                                                       */}
-          {/* ------------------------------------------------------------------ */}
+          {/* 1 ·  UPLOAD */}
           <div style={{
             border: '2px dashed var(--border)',
             borderRadius: '1rem',
@@ -126,7 +126,7 @@ export default function CreatePage() {
                 {file ? file.name : 'Drag and drop your meme'}
               </h3>
               <p style={{ color: 'var(--muted-foreground)' }}>
-                or click to browse your files (PNG/JPG/GIF ≤ 10 MB)
+                or click to browse your files (PNG/JPG/GIF ≤ 10 MB)
               </p>
             </div>
             <Button type="button" onClick={chooseFile} style={{
@@ -148,9 +148,7 @@ export default function CreatePage() {
             />
           </div>
 
-          {/* ------------------------------------------------------------------ */}
-          {/* 2 ·  CAPTION                                                      */}
-          {/* ------------------------------------------------------------------ */}
+          {/* 2 ·  CAPTION */}
           <div style={{
             backgroundColor: 'var(--card)',
             border: '1px solid var(--border)',
@@ -189,7 +187,7 @@ export default function CreatePage() {
               <Sparkles size={20} style={{ color: 'var(--primary)' }} />
               <div>
                 <p style={{ fontWeight: 500, color: 'var(--foreground)' }}>
-                  Generate AI Caption
+                  Generate AI Caption
                 </p>
                 <p style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>
                   Let AI suggest a funny caption based on your image
@@ -198,9 +196,7 @@ export default function CreatePage() {
             </div>
           </div>
 
-          {/* ------------------------------------------------------------------ */}
-          {/* 3 ·  NFT SETTINGS                                                 */}
-          {/* ------------------------------------------------------------------ */}
+          {/* 3 ·  NFT SETTINGS */}
           <div style={{
             backgroundColor: 'var(--card)',
             border: '1px solid var(--border)',
@@ -235,7 +231,7 @@ export default function CreatePage() {
 
               <div>
                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500, color: 'var(--foreground)' }}>
-                  Royalty Percentage (%)
+                  Royalty Percentage (%)
                 </label>
                 <input
                   type="number"
@@ -249,9 +245,7 @@ export default function CreatePage() {
             </div>
           </div>
 
-          {/* ------------------------------------------------------------------ */}
-          {/* 4 ·  SUBMIT                                                       */}
-          {/* ------------------------------------------------------------------ */}
+          {/* 4 ·  SUBMIT */}
           <Button
             type="submit"
             disabled={submitting}
@@ -270,10 +264,10 @@ export default function CreatePage() {
               opacity: submitting ? 0.6 : 1,
             }}
           >
-            {submitting ? 'Uploading…' : <>Mint Your Meme NFT <ArrowRight size={20} /></>}
+            {submitting ? 'Uploading…' : <>Mint Your Meme NFT <ArrowRight size={20} /></>}
           </Button>
 
-          {/* tiny status line –‑ no layout shift */}
+          {/* tiny status line –- no layout shift */}
           {message && (
             <p style={{
               textAlign: 'center',
