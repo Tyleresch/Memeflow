@@ -1,3 +1,5 @@
+// app/components/header.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -9,15 +11,9 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 
-/**
- * Header with a Wallet‑Adapter connect button.
- * Search + theme buttons use the secondary palette;
- * “Create” button uses the primary palette.
- */
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  /* shared button palettes ------------------------------------------- */
   const outlineBtn: React.CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
@@ -55,7 +51,6 @@ export function Header() {
     border: 0,
   };
 
-  /* ------------------------------------------------------------------ */
   return (
     <header
       style={{
@@ -83,7 +78,7 @@ export function Header() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Button
             variant="ghost"
-            style={{ display: 'none' }} // show via media query if desired
+            style={{ display: 'none' }}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <Menu style={{ width: '1.25rem', height: '1.25rem' }} />
@@ -91,14 +86,20 @@ export function Header() {
           </Button>
 
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Image src="/memeflow.png" alt="MemeFlow Logo" width={40} height={40} style={{ borderRadius: '0.375rem' }} />
+            <Image
+              src="/memeflow.png"
+              alt="MemeFlow Logo"
+              width={40}
+              height={40}
+              style={{ borderRadius: '0.375rem' }}
+            />
             <span style={{ fontWeight: 700 }}>MemeFlow</span>
           </Link>
         </div>
 
         {/* desktop nav */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          {['Explore', 'Create', 'Profile'].map((label) => (
+          {['Explore', 'Create', 'Profile', 'About'].map((label) => (
             <Link
               key={label}
               href={`/${label.toLowerCase()}`}
@@ -111,21 +112,17 @@ export function Header() {
 
         {/* utilities */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          {/* dark / light toggle */}
           <div style={outlineBtn}>
             <ModeToggle />
           </div>
 
-          {/* search */}
           <button type="button" style={outlineBtn}>
             <Search style={{ width: '1rem', height: '1rem' }} />
             <span style={srOnly}>Search</span>
           </button>
 
-          {/* wallet connect */}
           <WalletMultiButton />
 
-          {/* create */}
           <Link href="/create" style={primaryBtn}>
             <Upload style={{ width: '1rem', height: '1rem' }} />
             Create
@@ -148,7 +145,7 @@ export function Header() {
           }}
         >
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {['Home', 'Explore', 'Create', 'Profile'].map((label) => (
+            {['Home', 'Explore', 'Create', 'Profile', 'About'].map((label) => (
               <Link
                 key={label}
                 href={label === 'Home' ? '/' : `/${label.toLowerCase()}`}

@@ -35,7 +35,7 @@ export function Footer() {
           <SocialIcon href="https://twitter.com" label="Twitter">
             <Twitter />
           </SocialIcon>
-          <SocialIcon href="https://github.com" label="GitHub">
+          <SocialIcon href="https://github.com/Tyleresch" label="GitHub">
             <Github />
           </SocialIcon>
           <SocialIcon href="https://discord.com" label="Discord">
