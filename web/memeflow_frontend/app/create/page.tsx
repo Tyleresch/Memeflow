@@ -42,15 +42,30 @@ export default function CreatePage() {
       setSubmitting(true);
       setMessage(null);
 
-      const body = new FormData();
-      body.append('image',    file);
-      body.append('title',    nftName || file.name);
-      body.append('caption',  caption);
-      body.append('royalty',  royalty.toString());
+      // build JSON payload for /api/proposals
+      const walletAddr = (window as any).solana?.publicKey?.toString();
+      if (!walletAddr) {
+        setMessage('Wallet not connected');
+        setSubmitting(false);
+        return;
+      }
 
-      // ◀️ changed endpoint here to match your API route
-      const res = await fetch('/api/proposals', { method: 'POST', body });
-      if (!res.ok) throw new Error(await res.text());
+      const payload = {
+        title:  nftName || file.name,
+        amount: royalty,
+        wallet: walletAddr,
+      };
+
+      const res = await fetch('/api/proposals', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || 'Server error');
+      }
 
       setMessage('ok');
       // reset form

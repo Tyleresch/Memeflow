@@ -40,13 +40,15 @@ export async function POST(req: NextRequest) {
     return bad('Invalid wallet address');
   }
 
-  /* off-chain record -------------------------------------------------- */
+  /* write to your Meme table instead of non-existent Proposal --------- */
   try {
-    const proposal = await prisma.proposal.create({
+    const meme = await prisma.meme.create({
       data: {
-        onChainKey: 'OFF_CHAIN_PLACEHOLDER',
-        title: title.trim(),
-        amount: lamports,
+        title:       title.trim(),
+        // map amount (e.g. percentage) to basis points:
+        royaltyBps:  lamports * 100,
+        // placeholder since no image upload here:
+        imageUrl:    'OFF_CHAIN_PLACEHOLDER',
         creator: {
           connectOrCreate: {
             where:  { wallet: walletKey.toBase58() },
@@ -56,7 +58,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(proposal, { status: 201 });
+    return NextResponse.json(meme, { status: 201 });
   } catch (err) {
     console.error('[POST /api/proposals]', err);
     return bad('Server error', 500);
