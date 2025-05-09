@@ -5,5 +5,8 @@
   publish   = ".next"
   functions = "netlify/functions"
 
+[build.environment]
+  DATABASE_URL = "file:./data/memeflow.db"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
