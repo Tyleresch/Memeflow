@@ -4,7 +4,7 @@ import { ArrowRight, Star } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { HowItWorks } from "@/components/how-it-works";
-import { TrendingMemes } from "@/components/trending-memes";
+import TrendingMemes from "@/components/trending-memes";
 import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
